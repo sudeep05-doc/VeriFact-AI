@@ -1,4 +1,8 @@
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+
 function Landing() {
+  const { isAuthenticated } = useAuth();
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
@@ -34,9 +38,9 @@ function Landing() {
             </a>
           </nav>
 
-          <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-muted">
-            Sign in
-          </button>
+          <Link to={isAuthenticated ? "/profile" : "/login"} className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-muted">
+            {isAuthenticated ? "Profile" : "Sign in"}
+          </Link>
         </div>
       </header>
 
