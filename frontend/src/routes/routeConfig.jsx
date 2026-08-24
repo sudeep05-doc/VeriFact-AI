@@ -1,6 +1,7 @@
 import Landing from "@/pages/Landing/Landing";
 import HowItWorks from "@/pages/HowItWorks/HowItWorks";
 import Capabilities from "@/pages/Capabilities/Capabilities";
+import Verify from "@/pages/Verify/Verify";
 
 export const publicRoutes = [
   {
@@ -14,5 +15,9 @@ export const publicRoutes = [
   {
     path: "/capabilities",
     element: <Capabilities />,
+  },
+  {
+    path: "/verify",
+    element: <Verify />,
   },
 ];
