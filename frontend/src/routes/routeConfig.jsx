@@ -8,6 +8,10 @@ import Register from "@/pages/Register/Register";
 import Profile from "@/pages/Profile/Profile";
 import GuestRoute from "@/components/auth/GuestRoute";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import Dashboard from "@/pages/Dashboard/Dashboard";
+import History from "@/pages/History/History";
+import Settings from "@/pages/Settings/Settings";
+import AuthenticatedLayout from "@/layouts/AuthenticatedLayout";
 
 export const publicRoutes = [
   {
@@ -32,14 +36,42 @@ export const publicRoutes = [
   },
   {
     path: "/login",
-    element: <GuestRoute><Login /></GuestRoute>,
+    element: (
+      <GuestRoute>
+        <Login />
+      </GuestRoute>
+    ),
   },
   {
     path: "/register",
-    element: <GuestRoute><Register /></GuestRoute>,
+    element: (
+      <GuestRoute>
+        <Register />
+      </GuestRoute>
+    ),
   },
   {
     path: "/profile",
-    element: <ProtectedRoute><Profile /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <AuthenticatedLayout><Profile /></AuthenticatedLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <AuthenticatedLayout><Dashboard /></AuthenticatedLayout>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/history",
+    element: <ProtectedRoute><AuthenticatedLayout><History /></AuthenticatedLayout></ProtectedRoute>,
+  },
+  {
+    path: "/settings",
+    element: <ProtectedRoute><AuthenticatedLayout><Settings /></AuthenticatedLayout></ProtectedRoute>,
   },
 ];

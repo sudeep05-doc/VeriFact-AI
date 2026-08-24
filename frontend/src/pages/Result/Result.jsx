@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, CheckCircle2, Download, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { downloadReport } from "@/services/reportService";
 
 const inputTypeLabels = {
   text: "Text",
@@ -82,7 +83,7 @@ function Result() {
         <article className="rounded-2xl border border-border bg-card p-6 sm:p-8"><h2 className="text-lg font-semibold">AI Explanation</h2><p className="mt-3 leading-7 text-muted-foreground">{typeof result.summary === "string" && result.summary.trim() ? result.summary : "No explanation is available for this verification."}</p></article>
         <article className="rounded-2xl border border-border bg-card p-6 sm:p-8"><h2 className="text-lg font-semibold">Reasoning Summary</h2><p className="mt-3 leading-7 text-muted-foreground">{typeof result.reasoning?.summary === "string" && result.reasoning.summary.trim() ? result.reasoning.summary : "No reasoning summary is available for this verification."}</p></article>
         <article className="rounded-2xl border border-border bg-card p-6 sm:p-8"><h2 className="text-lg font-semibold">Verification Details</h2><dl className="mt-5 divide-y divide-border">{details.map(([label, value]) => <div key={label} className="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:justify-between"><dt className="text-sm text-muted-foreground">{label}</dt><dd className="text-sm font-medium">{value}</dd></div>)}</dl></article>
-        <div className="flex flex-col gap-3 sm:flex-row"><Button onClick={() => navigate("/verify")}><ArrowLeft /> Verify Again</Button><Button variant="outline" onClick={() => setReportMessage("Report downloads will be available when report generation is connected.")}><Download /> Download Report</Button></div>
+        <div className="flex flex-col gap-3 sm:flex-row"><Button onClick={() => navigate("/verify")}><ArrowLeft /> Verify Again</Button><Button variant="outline" onClick={async () => { try { await downloadReport(result.reportId || "latest-result"); } catch (downloadError) { setReportMessage(downloadError.message); } }}><Download /> Download Report</Button></div>
         {reportMessage && <p className="text-sm text-muted-foreground" role="status">{reportMessage}</p>}
         <section className="border-t border-border pt-8"><h2 className="text-lg font-semibold">Was this result helpful?</h2><div className="mt-4 flex flex-col gap-3 sm:flex-row"><Button variant={feedback === "helpful" ? "default" : "outline"} aria-pressed={feedback === "helpful"} onClick={() => setFeedback("helpful")}><ThumbsUp /> Helpful</Button><Button variant={feedback === "not-helpful" ? "default" : "outline"} aria-pressed={feedback === "not-helpful"} onClick={() => setFeedback("not-helpful")}><ThumbsDown /> Not helpful</Button></div>{feedback && <p className="mt-3 text-sm text-muted-foreground" role="status">Thanks for your feedback.</p>}</section>
       </div></section>

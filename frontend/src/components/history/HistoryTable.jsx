@@ -1,0 +1,8 @@
+import HistoryCard from "./HistoryCard";
+
+function HistoryTable({ items }) {
+  if (!items.length) return <section className="rounded-xl border border-dashed border-border bg-card p-10 text-center"><h2 className="font-semibold">No verifications found</h2><p className="mt-2 text-sm text-muted-foreground">Try changing your search or filter settings.</p></section>;
+  return <><div className="grid gap-3 md:hidden">{items.map((item) => <HistoryCard key={item.id} item={item} />)}</div><div className="hidden overflow-hidden rounded-xl border border-border bg-card md:block"><table className="w-full text-left text-sm"><thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground"><tr><th className="px-5 py-3 font-medium">Content</th><th className="px-5 py-3 font-medium">Verdict</th><th className="px-5 py-3 font-medium">Confidence</th><th className="px-5 py-3 font-medium">Date</th></tr></thead><tbody className="divide-y divide-border">{items.map((item) => <tr key={item.id}><td className="px-5 py-4"><p className="font-medium">{item.title}</p><p className="mt-1 text-xs text-muted-foreground">{item.inputType}</p></td><td className="px-5 py-4"><span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${item.verdict === "Likely Fake" ? "bg-destructive/10 text-destructive" : item.verdict === "Likely Real" ? "bg-muted text-foreground" : "bg-secondary text-secondary-foreground"}`}>{item.verdict}</span></td><td className="px-5 py-4">{item.confidence}%</td><td className="px-5 py-4 text-muted-foreground"><time dateTime={item.date}>{new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(new Date(item.date))}</time></td></tr>)}</tbody></table></div></>;
+}
+
+export default HistoryTable;
