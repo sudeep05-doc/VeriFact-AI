@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FileUpload from "@/components/verify/FileUpload";
 import ProcessingState from "@/components/verify/ProcessingState";
 import TextInput from "@/components/verify/TextInput";
@@ -10,6 +11,7 @@ import { validateFile, validateRequired, validateUrl, validateYouTubeUrl } from 
 const fileTypes = ["image", "pdf", "audio", "video"];
 
 function Verify() {
+  const navigate = useNavigate();
   const [type, setType] = useState("text");
   const [text, setText] = useState("");
   const [url, setUrl] = useState("");
@@ -41,14 +43,12 @@ function Verify() {
       const stages = (async () => { for (let step = 0; step < 5; step += 1) { if (active) setCurrentStep(step); await new Promise((resolve) => window.setTimeout(resolve, 400)); } })();
       const [result] = await Promise.all([verifyContent(verificationPayload), stages]);
       if (active) {
-        console.log("Mock verification result:", result);
-        // Future navigation: navigate("/result", { state: { result } });
-        setProcessing(false);
+        navigate("/result", { state: { result, inputType: verificationPayload.type } });
       }
     };
     run();
     return () => { active = false; };
-  }, [processing, verificationPayload]);
+  }, [navigate, processing, verificationPayload]);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
